@@ -28,8 +28,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.state)
-            api(projects.data)
+            api(projects.aagyaState)
+            api(projects.aagyaData)
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.compose.runtime)

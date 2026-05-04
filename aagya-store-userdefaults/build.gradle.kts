@@ -19,7 +19,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.state)
+            api(projects.aagyaState)
             implementation(libs.kotlinx.coroutines.core)
         }
     }

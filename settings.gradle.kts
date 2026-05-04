@@ -23,9 +23,9 @@ dependencyResolutionManagement {
     }
 }
 
-include(":state")
-include(":data")
-include(":store-datastore")
-include(":store-userdefaults")
-include(":di-koin")
+include(":aagya-state")
+include(":aagya-data")
+include(":aagya-store-datastore")
+include(":aagya-store-userdefaults")
+include(":aagya-di-koin")
 include(":sample-android")

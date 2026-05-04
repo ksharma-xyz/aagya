@@ -37,8 +37,8 @@ kotlin {
 }
 
 dependencies {
-    implementation(projects.data)
-    implementation(projects.storeDatastore)
+    implementation(projects.aagyaData)
+    implementation(projects.aagyaStoreDatastore)
     implementation(libs.compose.runtime)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui)

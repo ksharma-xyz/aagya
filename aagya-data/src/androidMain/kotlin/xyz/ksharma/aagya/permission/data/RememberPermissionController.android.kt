@@ -1,10 +1,11 @@
 package xyz.ksharma.aagya.permission.data
 
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.CompletableDeferred
 import xyz.ksharma.aagya.permission.Logger
 import xyz.ksharma.aagya.permission.NoOpLogger
@@ -15,10 +16,11 @@ public actual fun rememberPermissionController(
     policy: PermissionPolicy,
     logger: Logger,
 ): PermissionController {
-    val context = LocalContext.current
-    val activity = remember(context) {
-        AndroidPermissionController.resolveContextActivity(context)
-    }
+    val activity = (LocalActivity.current as? ComponentActivity)
+        ?: error(
+            "Aagya could not find a ComponentActivity. " +
+                "Call rememberPermissionController() inside an Activity host (typical Compose setup).",
+        )
 
     // Single deferred per outstanding request. Holding it in a remembered box lets
     // the launcher's callback resolve whichever request is currently in flight without

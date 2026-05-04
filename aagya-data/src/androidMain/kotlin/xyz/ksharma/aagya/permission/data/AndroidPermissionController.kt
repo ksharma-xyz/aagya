@@ -1,6 +1,5 @@
 package xyz.ksharma.aagya.permission.data
 
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -148,18 +147,5 @@ internal class AndroidPermissionController(
          * and subsequent `launcher.launch` calls return immediately with all-denied.
          */
         const val ANDROID_OS_CAP: Int = 2
-
-        internal fun resolveContextActivity(context: Context): ComponentActivity {
-            var ctx: Context? = context
-            while (ctx is android.content.ContextWrapper) {
-                if (ctx is ComponentActivity) return ctx
-                ctx = ctx.baseContext
-            }
-            error(
-                "Aagya could not find a ComponentActivity to bind to. " +
-                    "Make sure rememberPermissionController() is called inside an Activity " +
-                    "context (typical Compose setup).",
-            )
-        }
     }
 }

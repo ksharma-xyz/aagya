@@ -42,7 +42,7 @@ kotlin {
 }
 
 dependencies {
-    api(projects.state)
+    api(projects.aagyaState)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.androidx.activity.compose)
     implementation(libs.compose.runtime)
