@@ -6,7 +6,7 @@ module wires the moving parts up cleanly.
 ## Add the optional dep
 
 ```kotlin
-implementation("xyz.ksharma:aagya-di-koin:0.1.0")
+implementation("io.github.ksharma-xyz:aagya-di-koin:0.1.0")
 ```
 
 ## Register the module

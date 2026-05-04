@@ -8,7 +8,7 @@ A small, opinionated **Kotlin Multiplatform** permission library for Android and
 Built so you stop reimplementing the same `shouldShowRequestPermissionRationale` /
 `CLAuthorizationStatus` dance in every app.
 
-[![Maven Central](https://img.shields.io/maven-central/v/xyz.ksharma/aagya-state?style=flat-square&label=maven%20central)](https://central.sonatype.com/artifact/xyz.ksharma/aagya-state)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.ksharma-xyz/aagya-state?style=flat-square&label=maven%20central)](https://central.sonatype.com/artifact/io.github.ksharma-xyz/aagya-state)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](LICENSE)
 [![Kotlin](https://img.shields.io/badge/kotlin-2.3.10-7F52FF.svg?style=flat-square&logo=kotlin)](https://kotlinlang.org)
 [![Platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS-lightgrey.svg?style=flat-square)](#)
@@ -60,7 +60,7 @@ NotDetermined
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("xyz.ksharma:aagya-data:0.1.0")
+            implementation("io.github.ksharma-xyz:aagya-data:0.1.0")
         }
     }
 }
@@ -108,11 +108,11 @@ See [recipes](https://ksharma-xyz.github.io/aagya/recipes/) for stricter policie
 
 | Artifact | Purpose | Required? |
 |---|---|---|
-| `xyz.ksharma:aagya-state` | Pure-Kotlin types: `AppPermission`, `PermissionStatus`, `PermissionResult`, `PermissionPolicy`. | yes |
-| `xyz.ksharma:aagya-data` | `PermissionController` interface and Android/iOS implementations. | yes |
-| `xyz.ksharma:aagya-store-datastore` | Android `PermissionStore` backed by Jetpack DataStore. | optional |
-| `xyz.ksharma:aagya-store-userdefaults` | iOS `PermissionStore` backed by `NSUserDefaults`. | optional |
-| `xyz.ksharma:aagya-di-koin` | Koin module factory if you use Koin. | optional |
+| `io.github.ksharma-xyz:aagya-state` | Pure-Kotlin types: `AppPermission`, `PermissionStatus`, `PermissionResult`, `PermissionPolicy`. | yes |
+| `io.github.ksharma-xyz:aagya-data` | `PermissionController` interface and Android/iOS implementations. | yes |
+| `io.github.ksharma-xyz:aagya-store-datastore` | Android `PermissionStore` backed by Jetpack DataStore. | optional |
+| `io.github.ksharma-xyz:aagya-store-userdefaults` | iOS `PermissionStore` backed by `NSUserDefaults`. | optional |
+| `io.github.ksharma-xyz:aagya-di-koin` | Koin module factory if you use Koin. | optional |
 
 ## Supported platforms
 

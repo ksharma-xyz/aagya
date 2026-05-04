@@ -38,7 +38,7 @@ Aagya is a small KMP library that gives you a uniform permission API across Andr
 Add the dependency:
 
 ```kotlin
-implementation("xyz.ksharma:aagya-data:0.1.0")
+implementation("io.github.ksharma-xyz:aagya-data:0.1.0")
 ```
 
 Use it:
