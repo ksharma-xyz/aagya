@@ -9,6 +9,8 @@ Built so you stop reimplementing the same `shouldShowRequestPermissionRationale`
 `CLAuthorizationStatus` dance in every app.
 
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.ksharma-xyz/aagya-state?style=flat-square&label=maven%20central)](https://central.sonatype.com/artifact/io.github.ksharma-xyz/aagya-state)
+[![CI](https://img.shields.io/github/actions/workflow/status/ksharma-xyz/aagya/ci.yml?style=flat-square&label=CI)](https://github.com/ksharma-xyz/aagya/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/github/actions/workflow/status/ksharma-xyz/aagya/docs.yml?style=flat-square&label=docs)](https://ksharma-xyz.github.io/aagya/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](LICENSE)
 [![Kotlin](https://img.shields.io/badge/kotlin-2.3.10-7F52FF.svg?style=flat-square&logo=kotlin)](https://kotlinlang.org)
 [![Platforms](https://img.shields.io/badge/platforms-Android%20%7C%20iOS-lightgrey.svg?style=flat-square)](#)
