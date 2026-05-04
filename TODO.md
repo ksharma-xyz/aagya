@@ -26,12 +26,13 @@ Maven Central indexing lag is ~10-20 min after the workflow finishes. The artifa
 
 ## v0.2.0 candidate work
 
+- [ ] Replace `AndroidPermissionController.resolveContextActivity` with `LocalActivity.current` from `androidx.activity:activity-compose` 1.10+. Drops the `ContextWrapper` unwrap loop, simpler and idiomatic. Activity-compose is already a transitive dep, no new dep needed.
 - [ ] Implement `AppPermission.Camera` and `AppPermission.Microphone`
 - [ ] Implement `AppPermission.Notifications` (Android 13 / iOS UNUserNotificationCenter)
 - [ ] Background-location opt-in (`AppPermission.Location.Background`)
 - [ ] Robolectric SDK matrix tests for the Android controller (API 28, 30, 33, 36)
 - [ ] Add screenshot-tested sample showing each `Denied(canAskAgain)` UX state
-- [ ] Migrate KRAIL onto `aagya-data` (replace `core/permission`)
+- [x] Migrate KRAIL onto `aagya-data` (replace `core/permission`) — done 2026-05-05, branch `feat/aagya-dhruva-migration`
 
 ## v1.0.0 release criteria
 
