@@ -116,8 +116,8 @@ See [recipes](https://ksharma-xyz.github.io/aagya/recipes/) for stricter policie
 
 ## Supported platforms
 
-- **Android** API 24+ (Android 7.0 Nougat)
-- **iOS** 15.0+ (`iosArm64`, `iosSimulatorArm64`)
+- **Android** API 28+ (Android 7.0 Nougat)
+- **iOS** 15.3+ (`iosArm64`, `iosSimulatorArm64`)
 
 JVM and JS targets may follow if there is real demand. Open an issue.
 
