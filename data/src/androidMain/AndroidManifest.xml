@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Aagya itself does not declare any permission. The host app must declare the
+         permissions it intends to request in its own manifest. The library only
+         negotiates the runtime grant. -->
+
+</manifest>

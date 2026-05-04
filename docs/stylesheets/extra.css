@@ -1,0 +1,78 @@
+/* Aagya custom theme — warm saffron / deep orange accent palette */
+
+:root > * {
+    --md-primary-fg-color: #E25C29;
+    --md-primary-fg-color--light: #F08C5A;
+    --md-primary-fg-color--dark: #B44820;
+    --md-accent-fg-color: #F4B860;
+}
+
+[data-md-color-scheme="slate"] {
+    --md-default-bg-color: #1A1410;
+    --md-default-bg-color--light: #251D17;
+    --md-default-bg-color--lighter: #2F241C;
+    --md-primary-fg-color: #F08C5A;
+    --md-accent-fg-color: #F4B860;
+}
+
+/* Hero on home page */
+.aagya-hero {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    background: linear-gradient(135deg, rgba(226, 92, 41, 0.06), rgba(244, 184, 96, 0.06));
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.aagya-hero h1 {
+    font-size: 3rem;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, #E25C29, #F4B860);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.aagya-hero p {
+    font-size: 1.1rem;
+    color: var(--md-default-fg-color--light);
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.aagya-hero .sanskrit {
+    font-size: 1.5rem;
+    color: var(--md-accent-fg-color);
+    margin-bottom: 0.75rem;
+    font-style: italic;
+}
+
+/* Compact pill-style tag list */
+.tag-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.tag-pills li {
+    background: var(--md-primary-fg-color--light);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Code blocks: a touch more padding so listings breathe */
+.md-typeset .highlight pre {
+    padding: 1rem 1.25rem;
+}
+
+/* Table polish */
+.md-typeset table:not([class]) {
+    font-size: 0.85rem;
+}
