@@ -99,11 +99,23 @@ internal class IosPermissionController(
 
     override fun openAppSettings() {
         val url = NSURL.URLWithString(UIApplicationOpenSettingsURLString)
-        if (url != null) {
-            UIApplication.sharedApplication.openURL(url)
-        } else {
+        if (url == null) {
             logger.warn("openAppSettings: could not build settings URL")
+            return
         }
+        // Use the modern openURL:options:completionHandler: (iOS 10+).
+        // The single-argument openURL(NSURL) API was deprecated in iOS 10 and
+        // silently no-ops on iOS 18 builds, which is why earlier "Open Settings"
+        // taps did nothing.
+        UIApplication.sharedApplication.openURL(
+            url = url,
+            options = emptyMap<Any?, Any>(),
+            completionHandler = { success ->
+                if (!success) {
+                    logger.warn("openAppSettings: system refused to open Settings")
+                }
+            },
+        )
     }
 
     private fun mapToResult(status: CLAuthorizationStatus): PermissionResult =
