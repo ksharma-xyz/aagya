@@ -1,10 +1,11 @@
 import SwiftUI
 
 @main
-struct AagyaSampleApp: App {
+struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .ignoresSafeArea(edges: .all)
         }
     }
 }

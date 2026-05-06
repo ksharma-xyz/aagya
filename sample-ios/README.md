@@ -1,25 +1,44 @@
 # Aagya iOS Sample
 
-This sample exists primarily as a Swift-side reference of how the iOS host calls into
-Aagya. The Kotlin-Multiplatform–generated framework is consumed identically to any
-other shared KMP module.
+A native iOS app that hosts the **shared Compose Multiplatform** sample from
+the `:sample` module. Same UI as the Android sample — written once in Kotlin,
+rendered on iOS via Compose Multiplatform.
 
 ## Run it
 
-The recommended path is to drive Aagya from a shared KMP UI module via
-`ComposeUIViewController { /* ... */ }` and call `rememberPermissionController()` there.
-The flow is identical to the Android sample.
+1. Open the Xcode project:
+   ```bash
+   open iosApp/iosApp.xcodeproj
+   ```
+2. Pick a Simulator (iPhone 15 Pro or similar) or a connected device.
+3. Hit ⌘R.
 
-For a SwiftUI-only host, see `ContentView.swift`, it shows the equivalent direct call
-into `CLLocationManager`. The translation layer is small because Aagya intentionally
-mirrors the system semantics.
+The build phase invokes `./gradlew :sample:embedAndSignAppleFrameworkForXcode`
+to compile the shared Compose code into a `.framework`, embeds it in the app,
+and Swift's `ContentView.swift` wraps the resulting `UIViewController` from
+the Kotlin side via `IosEntryKt.SampleViewController()`.
 
-## Setup
+## What you should see
 
-1. Open `iosApp/iosApp.xcodeproj` (you will need to create the Xcode project locally, this
-   sample ships only the Swift sources, `Info.plist`, and a `README` to keep the repo small
-   and avoid checking in machine-specific Xcode metadata).
-2. Add `iosApp/AagyaSampleApp.swift` and `iosApp/ContentView.swift` to the target.
-3. Use `Info.plist` from this folder.
-4. If integrating Aagya through a shared KMP module, add the framework via SPM or CocoaPods
-   per JetBrains' [Compose Multiplatform iOS integration guide](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-ios-storyboard.html).
+- The same single screen as the Android sample: a status orb that morphs
+  through `NotDetermined → Granted → Denied(canAskAgain) → Denied(permanent)`,
+  a tier selector (OS-default vs persistent NSUserDefaults-backed), a primary
+  action button that morphs label/colour, and an activity log.
+- Tapping the primary button either surfaces the system permission dialog or
+  routes to Settings (when the OS-level state is permanently denied).
+
+## Troubleshooting
+
+- **"Cannot find 'IosEntryKt' in scope"**: the framework wasn't built. Force
+  the gradle build phase to run by cleaning (⇧⌘K) and rebuilding (⌘B).
+- **"Failed to find or build framework AagyaSample"**: run
+  `./gradlew :sample:linkDebugFrameworkIosSimulatorArm64` from the repo root
+  by hand and look at the gradle output for the real error.
+- **Code signing errors**: set `TEAM_ID` in
+  `iosApp/Configuration/Config.xcconfig` to your Apple Developer team, or
+  switch to a Simulator (which doesn't need signing).
+
+## Configuration
+
+- Bundle ID, marketing version, deployment target: `iosApp/Configuration/Config.xcconfig`.
+- App Info plist (with `NSLocationWhenInUseUsageDescription`): `iosApp/Info.plist`.
