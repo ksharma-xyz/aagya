@@ -20,7 +20,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +28,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -93,9 +94,40 @@ private enum class StorageTier(val label: String, val description: String) {
     StrictAskOnce("Ask once", "Persistent store. 1 prompt across both platforms.");
 }
 
+/**
+ * Picker entries for the sample. Aagya 0.1 supports Location only; the rest are
+ * shown greyed out so a first-time evaluator can see the library's intended
+ * surface area at a glance.
+ */
+private sealed interface PickerEntry {
+    val label: String
+
+    data class Supported(
+        override val label: String,
+        val permission: AppPermission,
+    ) : PickerEntry
+
+    data class ComingSoon(
+        override val label: String,
+        val plannedIn: String,
+    ) : PickerEntry
+}
+
+private val pickerEntries: List<PickerEntry> = listOf(
+    PickerEntry.Supported("Location · Fine", AppPermission.Location.Fine),
+    PickerEntry.Supported("Location · Coarse", AppPermission.Location.Coarse),
+    PickerEntry.ComingSoon("Camera", "v0.2"),
+    PickerEntry.ComingSoon("Microphone", "v0.2"),
+    PickerEntry.ComingSoon("Notifications", "v0.2"),
+    PickerEntry.ComingSoon("Photos", "v0.2"),
+)
+
 @Composable
 fun SampleApp(modifier: Modifier = Modifier) {
     var tier by remember { mutableStateOf(StorageTier.Stateless) }
+    var selected: PickerEntry.Supported by remember {
+        mutableStateOf(pickerEntries.first { it is PickerEntry.Supported } as PickerEntry.Supported)
+    }
     val persistentStore = rememberPersistentStore()
 
     val controller: PermissionController = when (tier) {
@@ -109,14 +141,16 @@ fun SampleApp(modifier: Modifier = Modifier) {
         )
     }
 
-    var status by remember(controller) { mutableStateOf<PermissionStatus>(PermissionStatus.NotDetermined) }
-    var requestCount by remember(controller) { mutableStateOf(0) }
+    var status by remember(controller, selected) {
+        mutableStateOf<PermissionStatus>(PermissionStatus.NotDetermined)
+    }
+    var requestCount by remember(controller, selected) { mutableStateOf(0) }
     val log = remember(controller) { mutableStateListOf<String>() }
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(controller) {
-        status = controller.checkPermissionStatus(AppPermission.Location.Fine)
-        if (controller.wasPermissionRequested(AppPermission.Location.Fine)) {
+    LaunchedEffect(controller, selected) {
+        status = controller.checkPermissionStatus(selected.permission)
+        if (controller.wasPermissionRequested(selected.permission)) {
             requestCount = 1   // we only know "at least one" without expanding the public API
         }
     }
@@ -131,27 +165,40 @@ fun SampleApp(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxSize()
                 .safeDrawingPadding()
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 20.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             HeaderBar(status = status)
+            PermissionPicker(
+                selected = selected,
+                onSelect = { selected = it },
+            )
             StatusOrb(status = status, palette = palette)
-            DetailCard(status = status, requestCount = requestCount, tier = tier)
+            DetailCard(
+                permissionLabel = selected.label,
+                status = status,
+                requestCount = requestCount,
+                tier = tier,
+            )
             TierSelector(current = tier, onSelect = { tier = it })
             PrimaryAction(
                 status = status,
                 palette = palette,
+                permissionLabel = selected.label,
                 onClick = {
                     scope.launch {
-                        if (status is PermissionStatus.Denied && !(status as PermissionStatus.Denied).canAskAgain) {
+                        if (status is PermissionStatus.Denied &&
+                            !(status as PermissionStatus.Denied).canAskAgain
+                        ) {
                             controller.openAppSettings()
-                            log.prepend("Opened Settings — return when you've toggled permission")
+                            log.prepend("Opened Settings, return when you've toggled permission")
                             return@launch
                         }
-                        log.prepend("Calling requestPermission(Location.Fine)")
-                        val result = controller.requestPermission(AppPermission.Location.Fine)
+                        log.prepend("Calling requestPermission(${selected.permission.key})")
+                        val result = controller.requestPermission(selected.permission)
                         log.prepend("-> $result")
-                        status = controller.checkPermissionStatus(AppPermission.Location.Fine)
+                        status = controller.checkPermissionStatus(selected.permission)
                         requestCount += 1
                         if (result is PermissionResult.Denied && !result.canAskAgain) {
                             log.prepend("System suppressed; tap again to open Settings")
@@ -159,9 +206,65 @@ fun SampleApp(modifier: Modifier = Modifier) {
                     }
                 },
             )
-            Spacer(Modifier.height(0.dp))
             ActivityLog(log = log)
+            Spacer(Modifier.height(8.dp))
         }
+    }
+}
+
+@OptIn(androidx.compose.foundation.layout.ExperimentalLayoutApi::class)
+@Composable
+private fun PermissionPicker(
+    selected: PickerEntry.Supported,
+    onSelect: (PickerEntry.Supported) -> Unit,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Text(
+            text = "WHICH PERMISSION",
+            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 1.4.sp),
+            color = Color(0xFFB59481),
+        )
+        androidx.compose.foundation.layout.FlowRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            pickerEntries.forEach { entry ->
+                when (entry) {
+                    is PickerEntry.Supported -> FilterChip(
+                        selected = selected == entry,
+                        onClick = { onSelect(entry) },
+                        label = { Text(entry.label) },
+                        colors = FilterChipDefaults.filterChipColors(
+                            containerColor = Color(0xFF251D17),
+                            labelColor = Color(0xFFE6D7CC),
+                            selectedContainerColor = Color(0xFFE25C29),
+                            selectedLabelColor = Color.White,
+                        ),
+                    )
+                    is PickerEntry.ComingSoon -> FilterChip(
+                        selected = false,
+                        enabled = false,
+                        onClick = {},
+                        label = {
+                            Text(
+                                "${entry.label}, ${entry.plannedIn}",
+                                style = MaterialTheme.typography.labelMedium,
+                            )
+                        },
+                        colors = FilterChipDefaults.filterChipColors(
+                            disabledContainerColor = Color(0xFF15100C),
+                            disabledLabelColor = Color(0xFF6B574A),
+                        ),
+                    )
+                }
+            }
+        }
+        Text(
+            text = "v0.1 supports Location. The rest land in v0.2.",
+            style = MaterialTheme.typography.bodySmall,
+            color = Color(0xFF8B7468),
+        )
     }
 }
 
@@ -270,13 +373,14 @@ private fun StatusOrb(status: PermissionStatus, palette: StatePalette) {
 
 @Composable
 private fun DetailCard(
+    permissionLabel: String,
     status: PermissionStatus,
     requestCount: Int,
     tier: StorageTier,
 ) {
     val description = when (status) {
-        PermissionStatus.NotDetermined -> "Aagya hasn't asked yet. Tap below to surface the system dialog."
-        PermissionStatus.Granted -> "App can read precise location. The system can revoke this from Settings."
+        PermissionStatus.NotDetermined -> "Aagya hasn't asked for $permissionLabel yet. Tap below to surface the system dialog."
+        PermissionStatus.Granted -> "App can read $permissionLabel. The user can still revoke it from Settings."
         is PermissionStatus.Denied -> if (status.canAskAgain) {
             "User declined once. Aagya can ask again."
         } else {
@@ -357,9 +461,14 @@ private fun TierSelector(current: StorageTier, onSelect: (StorageTier) -> Unit) 
 }
 
 @Composable
-private fun PrimaryAction(status: PermissionStatus, palette: StatePalette, onClick: () -> Unit) {
+private fun PrimaryAction(
+    status: PermissionStatus,
+    palette: StatePalette,
+    permissionLabel: String,
+    onClick: () -> Unit,
+) {
     val label = when (status) {
-        PermissionStatus.NotDetermined -> "Ask for location permission"
+        PermissionStatus.NotDetermined -> "Ask for $permissionLabel"
         PermissionStatus.Granted -> "Already granted, ask again"
         is PermissionStatus.Denied -> if (status.canAskAgain) "Try again" else "Open Settings"
         PermissionStatus.Restricted -> "Restricted, learn more"
