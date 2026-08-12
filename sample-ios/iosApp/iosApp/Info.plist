@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>The Aagya sample asks for your location to demonstrate the permission flow.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The Aagya sample asks for microphone access to demonstrate the permission flow.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

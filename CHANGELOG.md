@@ -6,6 +6,10 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- `AppPermission.Microphone.Default`, with Android (`RECORD_AUDIO`) and iOS
+  (`AVAudioSession` record permission) implementations.
+
 ## [0.1.1] - 2026-05-05
 
 ### Fixed

@@ -71,11 +71,7 @@ internal class IosPermissionController(
 
         return runCatching {
             evaluator.recordPrompt(permission)
-            val deferred = CompletableDeferred<CLAuthorizationStatus>()
-            delegate.pending = deferred
-            locationManager.requestWhenInUseAuthorization()
-            val resolved = deferred.await()
-            mapToResult(resolved)
+            mapToResult(requestAuthorization(permission))
         }.getOrElse { error ->
             logger.error("requestPermission: failed for ${permission.key}", error)
             PermissionResult.Denied(
@@ -85,14 +81,23 @@ internal class IosPermissionController(
         }
     }
 
-    override suspend fun checkPermissionStatus(permission: AppPermission): PermissionStatus {
-        // Both Fine and Coarse share the same iOS authorization status.
-        return when (permission) {
-            AppPermission.Location.Fine,
-            AppPermission.Location.Coarse,
-            -> locationManager.authorizationStatus.toPermissionStatus()
+    override suspend fun checkPermissionStatus(permission: AppPermission): PermissionStatus =
+        when (permission) {
+            // Both Fine and Coarse share the same iOS authorization status.
+            is AppPermission.Location -> locationManager.authorizationStatus.toPermissionStatus()
+            is AppPermission.Microphone -> microphoneAuthorizationStatus()
         }
-    }
+
+    private suspend fun requestAuthorization(permission: AppPermission): PermissionStatus =
+        when (permission) {
+            is AppPermission.Location -> {
+                val deferred = CompletableDeferred<CLAuthorizationStatus>()
+                delegate.pending = deferred
+                locationManager.requestWhenInUseAuthorization()
+                deferred.await().toPermissionStatus()
+            }
+            is AppPermission.Microphone -> requestMicrophoneAuthorization()
+        }
 
     override suspend fun wasPermissionRequested(permission: AppPermission): Boolean =
         evaluator.wasRequested(permission)
@@ -118,8 +123,8 @@ internal class IosPermissionController(
         )
     }
 
-    private fun mapToResult(status: CLAuthorizationStatus): PermissionResult =
-        when (status.toPermissionStatus()) {
+    private fun mapToResult(status: PermissionStatus): PermissionResult =
+        when (status) {
             PermissionStatus.Granted -> PermissionResult.Granted
             is PermissionStatus.Denied -> PermissionResult.Denied(
                 canAskAgain = false,

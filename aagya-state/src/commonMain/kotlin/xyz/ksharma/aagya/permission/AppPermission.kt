@@ -8,8 +8,8 @@ package xyz.ksharma.aagya.permission
  * (Camera, Microphone, etc.) is non-breaking for consumers because they pattern-match
  * against the family they care about, not the closed universe.
  *
- * v0.1 ships only the [Location] family. Other families are reserved here for visibility
- * and will be added in subsequent minor releases.
+ * v0.1 shipped only the [Location] family; [Microphone] follows in this release. Other
+ * families are reserved here for visibility and will be added in subsequent releases.
  *
  * Example:
  * ```
@@ -46,11 +46,23 @@ public sealed interface AppPermission {
         }
     }
 
+    /**
+     * Microphone access.
+     *
+     * On Android this maps to `RECORD_AUDIO`. On iOS it maps to `AVAudioSession`'s record
+     * permission (`requestRecordPermission`) - there is no fine/coarse distinction, unlike
+     * [Location], so this family has a single [Default] member.
+     */
+    public sealed interface Microphone : AppPermission {
+        public data object Default : Microphone {
+            override val key: String = "microphone.default"
+        }
+    }
+
     // Future families. Uncomment as implementations land. Marked here so consumers
     // can see the trajectory and IDEs surface the namespace.
     //
     // public sealed interface Camera : AppPermission { public data object Default : Camera }
-    // public sealed interface Microphone : AppPermission { public data object Default : Microphone }
     // public sealed interface Notifications : AppPermission { public data object Default : Notifications }
     // public sealed interface Photos : AppPermission {
     //     public data object Read : Photos
