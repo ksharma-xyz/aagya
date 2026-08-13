@@ -11,7 +11,7 @@
         android:theme="@style/Theme.Aagya">
 
         <activity
-            android:name=".SampleActivity"
+            android:name="xyz.ksharma.aagya.sample.SampleActivity"
             android:exported="true"
             android:theme="@style/Theme.Aagya">
             <intent-filter>

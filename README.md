@@ -62,7 +62,7 @@ NotDetermined
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.ksharma-xyz:aagya-data:0.1.0")
+            implementation("io.github.ksharma-xyz:aagya-data:0.2.0")
         }
     }
 }

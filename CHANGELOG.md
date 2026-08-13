@@ -6,9 +6,21 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-13
+
 ### Added
 - `AppPermission.Microphone.Default`, with Android (`RECORD_AUDIO`) and iOS
   (`AVAudioSession` record permission) implementations.
+
+### Changed
+- `IosPermissionController` now dispatches by permission family instead of
+  assuming every request is Location/`CLLocationManager`.
+
+### Fixed
+- `sample-android` crashed on launch. The manifest referenced `.SampleActivity`,
+  which resolves against the module namespace (`xyz.ksharma.aagya.sample.android`),
+  but the class lives in `xyz.ksharma.aagya.sample`. The manifest now uses the
+  fully-qualified name. Library artifacts were unaffected.
 
 ## [0.1.1] - 2026-05-05
 
