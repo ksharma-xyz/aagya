@@ -6,11 +6,32 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed - BREAKING
+- **Group ID is now `xyz.ksharma`**, was `io.github.ksharma-xyz`. It now matches
+  the `xyz.ksharma.*` package names the library has always shipped. Maven Central
+  coordinates cannot be moved, so 0.1.0 through 0.2.0 remain published under the
+  old group and 0.3.0 onward is under the new one. Update the group when you
+  upgrade; artifact names and the API are unchanged.
+
+  ```diff
+  - implementation("io.github.ksharma-xyz:aagya-data:0.2.0")
+  + implementation("xyz.ksharma:aagya-data:0.3.0")
+  ```
+
+- **Minimum iOS version is now 17.0**, was 15.3. Microphone support moved to
+  `AVAudioApplication`, which is iOS 17+. The `AVAudioSession` APIs it replaces
+  were deprecated in iOS 17, and Kotlin/Native has no `if #available` equivalent
+  to gate between them at runtime, so the floor moves rather than shipping an
+  untestable fallback branch. Android is unaffected.
+
 ### Added
 - Snapshot builds of `main` are now published to the Central Portal snapshot
   repository, so downstream apps can consume unreleased changes without waiting
   for a tagged release. See `docs/publishing.md` for the repository URL and the
   caching caveat.
+- iOS test coverage for the microphone authorization path, which runs against the
+  simulator runtime. Compiling cannot prove an iOS 17+ symbol resolves on the
+  running system; only executing it can.
 
 ## [0.2.0] - 2026-08-13
 

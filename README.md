@@ -68,6 +68,13 @@ kotlin {
 }
 ```
 
+> **Heads up — the group ID changes in 0.3.0.** Aagya is moving from
+> `io.github.ksharma-xyz` to `xyz.ksharma`, matching the `xyz.ksharma.*` package
+> names it has always shipped. Maven Central coordinates cannot be moved, so
+> 0.2.0 and earlier stay where they are and 0.3.0 onward publishes under
+> `xyz.ksharma:aagya-*`. Update the group when you upgrade; artifact names and
+> the API are unchanged.
+
 ### Request a permission
 
 ```kotlin
@@ -119,7 +126,7 @@ See [recipes](https://ksharma-xyz.github.io/aagya/recipes/) for stricter policie
 ## Supported platforms
 
 - **Android** API 28+ (Android 7.0 Nougat)
-- **iOS** 15.3+ (`iosArm64`, `iosSimulatorArm64`)
+- **iOS** 17.0+ (`iosArm64`, `iosSimulatorArm64`)
 
 JVM and JS targets may follow if there is real demand. Open an issue.
 

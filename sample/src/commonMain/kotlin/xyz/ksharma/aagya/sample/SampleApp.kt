@@ -261,7 +261,7 @@ private fun PermissionPicker(
             }
         }
         Text(
-            text = "v0.1 supports Location. The rest land in v0.2.",
+            text = "Location and Microphone ship today. The rest land in v0.3.",
             style = MaterialTheme.typography.bodySmall,
             color = Color(0xFF8B7468),
         )
