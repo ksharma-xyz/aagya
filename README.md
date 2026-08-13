@@ -125,8 +125,8 @@ JVM and JS targets may follow if there is real demand. Open an issue.
 
 ## Roadmap
 
-`v0.1` shipped `Location.Fine` and `Location.Coarse`; `Microphone.Default` has since
-followed. The sealed hierarchy already includes stubs for the rest so adding them is
+`v0.1` shipped `Location.Fine` and `Location.Coarse`; `v0.2` added `Microphone.Default`.
+The sealed hierarchy already includes stubs for the rest so adding them is
 non-breaking:
 
 - `Camera`

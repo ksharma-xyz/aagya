@@ -117,9 +117,9 @@ private val pickerEntries: List<PickerEntry> = listOf(
     PickerEntry.Supported("Location · Fine", AppPermission.Location.Fine),
     PickerEntry.Supported("Location · Coarse", AppPermission.Location.Coarse),
     PickerEntry.Supported("Microphone", AppPermission.Microphone.Default),
-    PickerEntry.ComingSoon("Camera", "v0.2"),
-    PickerEntry.ComingSoon("Notifications", "v0.2"),
-    PickerEntry.ComingSoon("Photos", "v0.2"),
+    PickerEntry.ComingSoon("Camera", "v0.3"),
+    PickerEntry.ComingSoon("Notifications", "v0.3"),
+    PickerEntry.ComingSoon("Photos", "v0.3"),
 )
 
 @Composable
