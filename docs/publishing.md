@@ -115,6 +115,16 @@ answer different questions.
 that coordinate to the Central Portal snapshot repository. No tag, no
 ceremony, nothing permanent.
 
+!!! danger "Two prerequisites, or the publish fails"
+    1. **The namespace must have snapshots enabled.** On
+       <https://central.sonatype.com/publishing/namespaces>, click the three
+       dots next to `io.github.ksharma-xyz` and select **Enable SNAPSHOTs**.
+       This is a one-time manual step and cannot be automated.
+    2. **`vanniktech-publish` must be 0.31.0 or newer.** Central Portal
+       snapshot support landed in 0.31.0. On 0.30.0 the publish fails at
+       execution time with `Snapshots are not supported when publishing
+       through the central portal`, regardless of the namespace setting.
+
 Consuming apps opt in with an extra repository:
 
 ```kotlin
