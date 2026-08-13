@@ -20,4 +20,8 @@ internal fun AppPermission.toAndroidPermissions(): List<String> = when (this) {
     AppPermission.Location.Coarse -> listOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
     )
+
+    AppPermission.Microphone.Default -> listOf(
+        Manifest.permission.RECORD_AUDIO,
+    )
 }

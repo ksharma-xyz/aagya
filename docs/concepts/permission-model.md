@@ -1,7 +1,7 @@
 # Permission model
 
-Aagya represents permissions as a sealed hierarchy. v0.1 ships only the `Location`
-family but the shape is designed for a dozen more.
+Aagya represents permissions as a sealed hierarchy. `Location` and `Microphone` ship
+today but the shape is designed for a dozen more.
 
 ## The sealed hierarchy
 
@@ -14,9 +14,12 @@ sealed interface AppPermission {
         data object Coarse : Location
     }
 
+    sealed interface Microphone : AppPermission {
+        data object Default : Microphone
+    }
+
     // Reserved for future minor releases:
     // sealed interface Camera
-    // sealed interface Microphone
     // sealed interface Notifications
     // sealed interface Photos { Read; ReadWrite }
     // sealed interface Calendar

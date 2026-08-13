@@ -20,5 +20,6 @@ class AppPermissionTest {
         // Changing them is a breaking change.
         assertEquals("location.fine", AppPermission.Location.Fine.key)
         assertEquals("location.coarse", AppPermission.Location.Coarse.key)
+        assertEquals("microphone.default", AppPermission.Microphone.Default.key)
     }
 }
