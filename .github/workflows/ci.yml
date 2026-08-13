@@ -40,6 +40,13 @@ jobs:
       - name: Build sample APK (debug)
         run: ./gradlew :sample-android:assembleDebug --stacktrace
 
+      # Runs the same Android Lint that `./gradlew build` does, so CI and a
+      # contributor's local full build agree on what "green" means. Without this
+      # a manifest error like MissingClass builds a perfectly valid APK that
+      # crashes on launch -- which is exactly how #6 shipped twice.
+      - name: Lint (Android)
+        run: ./gradlew lint --stacktrace
+
       - name: Detekt
         run: ./gradlew detekt --stacktrace
         continue-on-error: true
