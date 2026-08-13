@@ -8,7 +8,7 @@ A small, opinionated **Kotlin Multiplatform** permission library for Android and
 Built so you stop reimplementing the same `shouldShowRequestPermissionRationale` /
 `CLAuthorizationStatus` dance in every app.
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.ksharma-xyz/aagya-state?style=flat-square&label=maven%20central)](https://central.sonatype.com/artifact/io.github.ksharma-xyz/aagya-state)
+[![Maven Central](https://img.shields.io/maven-central/v/xyz.ksharma/aagya-state?style=flat-square&label=maven%20central)](https://central.sonatype.com/artifact/xyz.ksharma/aagya-state)
 [![CI](https://img.shields.io/github/actions/workflow/status/ksharma-xyz/aagya/ci.yml?style=flat-square&label=CI)](https://github.com/ksharma-xyz/aagya/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/github/actions/workflow/status/ksharma-xyz/aagya/docs.yml?style=flat-square&label=docs)](https://ksharma-xyz.github.io/aagya/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square)](LICENSE)
@@ -62,18 +62,17 @@ NotDetermined
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.ksharma-xyz:aagya-data:0.2.0")
+            implementation("xyz.ksharma:aagya-data:0.3.0")
         }
     }
 }
 ```
 
-> **Heads up — the group ID changes in 0.3.0.** Aagya is moving from
+> **Upgrading from 0.2.0 or earlier?** The group ID changed in 0.3.0, from
 > `io.github.ksharma-xyz` to `xyz.ksharma`, matching the `xyz.ksharma.*` package
-> names it has always shipped. Maven Central coordinates cannot be moved, so
-> 0.2.0 and earlier stay where they are and 0.3.0 onward publishes under
-> `xyz.ksharma:aagya-*`. Update the group when you upgrade; artifact names and
-> the API are unchanged.
+> names the library has always shipped. Maven Central coordinates cannot be
+> moved, so 0.2.0 and earlier remain under the old group. Change the group when
+> you upgrade; artifact names and the API are unchanged.
 
 ### Request a permission
 
@@ -117,11 +116,11 @@ See [recipes](https://ksharma-xyz.github.io/aagya/recipes/) for stricter policie
 
 | Artifact | Purpose | Required? |
 |---|---|---|
-| `io.github.ksharma-xyz:aagya-state` | Pure-Kotlin types: `AppPermission`, `PermissionStatus`, `PermissionResult`, `PermissionPolicy`. | yes |
-| `io.github.ksharma-xyz:aagya-data` | `PermissionController` interface and Android/iOS implementations. | yes |
-| `io.github.ksharma-xyz:aagya-store-datastore` | Android `PermissionStore` backed by Jetpack DataStore. | optional |
-| `io.github.ksharma-xyz:aagya-store-userdefaults` | iOS `PermissionStore` backed by `NSUserDefaults`. | optional |
-| `io.github.ksharma-xyz:aagya-di-koin` | Koin module factory if you use Koin. | optional |
+| `xyz.ksharma:aagya-state` | Pure-Kotlin types: `AppPermission`, `PermissionStatus`, `PermissionResult`, `PermissionPolicy`. | yes |
+| `xyz.ksharma:aagya-data` | `PermissionController` interface and Android/iOS implementations. | yes |
+| `xyz.ksharma:aagya-store-datastore` | Android `PermissionStore` backed by Jetpack DataStore. | optional |
+| `xyz.ksharma:aagya-store-userdefaults` | iOS `PermissionStore` backed by `NSUserDefaults`. | optional |
+| `xyz.ksharma:aagya-di-koin` | Koin module factory if you use Koin. | optional |
 
 ## Supported platforms
 

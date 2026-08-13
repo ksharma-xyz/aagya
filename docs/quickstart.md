@@ -10,7 +10,7 @@ This guide gets a fresh KMP app from zero to "user can grant location" in five m
     kotlin {
         sourceSets {
             commonMain.dependencies {
-                implementation("io.github.ksharma-xyz:aagya-data:0.2.0")
+                implementation("xyz.ksharma:aagya-data:0.3.0")
             }
         }
     }
@@ -20,7 +20,7 @@ This guide gets a fresh KMP app from zero to "user can grant location" in five m
 
     ```kotlin title="app/build.gradle.kts"
     dependencies {
-        implementation("io.github.ksharma-xyz:aagya-data:0.2.0")
+        implementation("xyz.ksharma:aagya-data:0.3.0")
     }
     ```
 
