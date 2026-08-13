@@ -6,6 +6,12 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Snapshot builds of `main` are now published to the Central Portal snapshot
+  repository, so downstream apps can consume unreleased changes without waiting
+  for a tagged release. See `docs/publishing.md` for the repository URL and the
+  caching caveat.
+
 ## [0.2.0] - 2026-08-13
 
 ### Added
