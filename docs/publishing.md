@@ -7,15 +7,26 @@ End-to-end flow for cutting a release to **Maven Central** via the new
 
 ### 1. Claim your namespace on Central Portal
 
-Aagya publishes under **`io.github.ksharma-xyz`** — the auto-validated GitHub-style namespace. Central Portal verifies it from your GitHub username, no DNS work needed.
+Aagya publishes under **`xyz.ksharma`**, the domain-verified namespace, as of 0.3.0.
 
-1. Sign in at <https://central.sonatype.com/> (use the same GitHub account as the repo owner).
-2. **Namespaces** → Add `io.github.ksharma-xyz`.
-3. Central detects the matching GitHub account and verifies in seconds.
-4. Once verified, you can publish any artifact under `io.github.ksharma-xyz:*`.
+1. Sign in at <https://central.sonatype.com/>.
+2. **Namespaces** → Add `xyz.ksharma`.
+3. Central issues a TXT record to add to the `ksharma.xyz` DNS zone, then verifies it.
+4. Once verified, you can publish any artifact under `xyz.ksharma:*`.
 
-!!! note "Why io.github.* instead of xyz.ksharma?"
-    Both work on Maven Central. We picked `io.github.ksharma-xyz` because it auto-verifies via GitHub and skips the DNS dance. If you ever want to migrate to a domain-based namespace later, you can publish under both — but it's a coordinate change for consumers, so pick early and stick with it.
+!!! note "0.2.0 and earlier are at a different coordinate"
+    Aagya originally published under `io.github.ksharma-xyz`, the GitHub-style
+    namespace that auto-verifies without DNS work. 0.3.0 moved to `xyz.ksharma`
+    so the group ID matches the `xyz.ksharma.*` package names the library has
+    always shipped.
+
+    Maven Central coordinates are immovable, so this is a clean split rather
+    than a migration: 0.1.0 through 0.2.0 remain at `io.github.ksharma-xyz`
+    forever, and 0.3.0 onward is at `xyz.ksharma`. Consumers change the group
+    when they upgrade; artifact names and the API are untouched.
+
+    Publishing under both was considered and rejected — it doubles every
+    artifact and leaves consumers guessing which is canonical.
 
 ### 2. Generate a signing key
 
@@ -118,7 +129,7 @@ ceremony, nothing permanent.
 !!! danger "Two prerequisites, or the publish fails"
     1. **The namespace must have snapshots enabled.** On
        <https://central.sonatype.com/publishing/namespaces>, click the three
-       dots next to `io.github.ksharma-xyz` and select **Enable SNAPSHOTs**.
+       dots next to `xyz.ksharma` and select **Enable SNAPSHOTs**.
        This is a one-time manual step and cannot be automated.
     2. **`vanniktech-publish` must be 0.31.0 or newer.** Central Portal
        snapshot support landed in 0.31.0. On 0.30.0 the publish fails at
@@ -134,7 +145,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.ksharma-xyz:aagya-data:0.3.0-SNAPSHOT")
+    implementation("xyz.ksharma:aagya-data:0.3.0-SNAPSHOT")
 }
 ```
 
@@ -188,7 +199,7 @@ Before tagging, confirm everything publishes locally:
 
 ```bash
 ./gradlew publishToMavenLocal --no-configuration-cache
-ls ~/.m2/repository/io/github/ksharma-xyz/aagya-state/0.1.0/
+ls ~/.m2/repository/xyz/ksharma/aagya-state/0.3.0/
 ```
 
 You should see `.aar`, `.pom`, `.module`, and `.asc` signature files.
