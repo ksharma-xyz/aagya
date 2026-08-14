@@ -6,6 +6,13 @@ and the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Detekt was declared in the version catalog but never applied to any module, so
+  the CI step running it failed with `Task 'detekt' not found` on every build.
+  The step was marked `continue-on-error`, so that failure was reported and
+  discarded for the lifetime of the workflow. Detekt now actually runs, with a
+  config under `config/detekt/`, and can fail the build.
+
 ## [0.3.0] - 2026-08-14
 
 ### Changed - BREAKING

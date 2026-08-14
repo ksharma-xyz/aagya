@@ -379,7 +379,8 @@ private fun DetailCard(
     tier: StorageTier,
 ) {
     val description = when (status) {
-        PermissionStatus.NotDetermined -> "Aagya hasn't asked for $permissionLabel yet. Tap below to surface the system dialog."
+        PermissionStatus.NotDetermined ->
+            "Aagya hasn't asked for $permissionLabel yet. Tap below to surface the system dialog."
         PermissionStatus.Granted -> "App can read $permissionLabel. The user can still revoke it from Settings."
         is PermissionStatus.Denied -> if (status.canAskAgain) {
             "User declined once. Aagya can ask again."
