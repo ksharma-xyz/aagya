@@ -41,7 +41,37 @@ jobs:
       # and Android unit tests. Gradle names the failing task on failure, and the
       # reports artifact below carries the detail.
       - name: Build, test, lint, detekt
+        id: build
         run: ./gradlew build --stacktrace
+
+      # Kover's report task depends on the same test tasks `build` just ran, so those are
+      # UP-TO-DATE here and this only does the merge - coverage costs a report, not a second
+      # test run. Only reached when the build passed: partial coverage from a broken run is
+      # worse than none.
+      - name: Generate coverage report
+        id: coverage
+        run: ./gradlew koverXmlReport koverHtmlReport --stacktrace
+
+      - name: Upload coverage report (HTML)
+        if: always() && steps.coverage.conclusion == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-${{ github.run_id }}
+          path: build/reports/kover/html/**
+          if-no-files-found: warn
+          retention-days: 7
+
+      # Best-effort: a missing token or a Codecov outage must not fail a PR. The `host-tests`
+      # flag records what this number actually measures - Kover is JVM-only, so the iOS
+      # actuals are absent from it by construction, not by omission.
+      - name: Upload coverage to Codecov
+        if: always() && steps.coverage.conclusion == 'success'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build/reports/kover/report.xml
+          flags: host-tests
+          fail_ci_if_error: false
 
       - name: Upload sample APK
         if: success()

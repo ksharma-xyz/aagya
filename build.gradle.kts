@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.vanniktech.publish) apply false
     alias(libs.plugins.dokka) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.kover)
 }
 
 allprojects {
@@ -41,4 +42,30 @@ subprojects {
             md.required.set(false)
         }
     }
+}
+
+// Coverage is host-only by construction: Kover instruments JVM bytecode, so it sees
+// commonTest and androidUnitTest and has nothing to say about iosSimulatorArm64Test.
+// Kotlin/Native is not supported upstream. The iOS actuals in :aagya-data and the whole of
+// :aagya-store-userdefaults therefore read as uncovered even when the iOS suite exercises
+// them - read the number as "coverage of the shared logic", not of the library as a whole.
+//
+// Modules are enrolled by whether they actually have test sources, not by a hand-kept list,
+// so a new module with tests is measured without anyone remembering to add it here. Modules
+// with no tests are deliberately left out: including them would report their production code
+// as 0% covered, which is true but drowns the signal from the modules that do have suites.
+//
+// The plugin has to be applied to each measured module as well as the root - the root
+// `kover` configuration resolves a `kover`-usage variant that only a Kover-enabled project
+// publishes. Aggregating a module without it fails with "No matching variant".
+val coverageTestSourceDirs = listOf("commonTest", "androidUnitTest", "androidHostTest", "jvmTest")
+
+subprojects {
+    val hasTestSources = coverageTestSourceDirs.any { dir ->
+        file("src/$dir").let { it.isDirectory && it.walkTopDown().any { f -> f.extension == "kt" } }
+    }
+    if (!hasTestSources) return@subprojects
+
+    apply(plugin = "org.jetbrains.kotlinx.kover")
+    rootProject.dependencies.add("kover", this)
 }
